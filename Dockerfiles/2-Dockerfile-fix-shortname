@@ -1,0 +1,17 @@
+FROM docker.io/eclipse-temurin:17.0.6_10-jre-alpine@sha256:c26a727c4883eb73d32351be8bacb3e70f390c2c94f078dc493495ed93c60c2f AS builder
+WORKDIR application
+ARG JAR_FILE
+COPY target/${JAR_FILE} app.jar
+RUN java -Djarmode=layertools -jar app.jar extract
+
+FROM docker.io/eclipse-temurin:17.0.6_10-jre-alpine@sha256:c26a727c4883eb73d32351be8bacb3e70f390c2c94f078dc493495ed93c60c2f
+WORKDIR /opt/app
+RUN addgroup --system javauser && adduser -S -s /usr/sbin/nologin -G javauser javauser
+COPY --from=builder application/dependencies/ ./
+COPY --from=builder application/spring-boot-loader/ ./
+COPY --from=builder application/snapshot-dependencies/ ./
+COPY --from=builder application/application/ ./
+RUN chown -R javauser:javauser .
+USER javauser
+
+ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
