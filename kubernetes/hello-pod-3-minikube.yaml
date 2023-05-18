@@ -1,0 +1,63 @@
+# Save the output of this file and use kubectl create -f to import
+# it into Kubernetes.
+#
+# Created with podman-3.4.4
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: "2023-05-18T07:07:31Z"
+  labels:
+    app: hello-pod
+  name: hello-pod
+spec:
+  ports:
+  - name: "8081"
+    nodePort: 32696
+    port: 8081
+    targetPort: 8081
+  - name: "8080"
+    nodePort: 31435
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: hello-pod
+  type: NodePort
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2023-05-13T08:21:40Z"
+  labels:
+    app: hello-pod
+  name: hello-pod
+spec:
+  containers:
+    - env:
+        - name: SERVER_PORT
+          value: 8081
+      image: docker.io/mydeveloperplanet/mypodmanplanet:0.0.1-SNAPSHOT
+      name: mypodmanplanet-1
+      ports:
+        - containerPort: 8081
+          hostPort: 8081
+      resources: {}
+      securityContext:
+        capabilities:
+          drop:
+            - CAP_MKNOD
+            - CAP_NET_RAW
+            - CAP_AUDIT_WRITE
+    - image: docker.io/mydeveloperplanet/mypodmanplanet:0.0.1-SNAPSHOT
+      name: mypodmanplanet-2
+      ports:
+        - containerPort: 8080
+          hostPort: 8080
+      resources: {}
+      securityContext:
+        capabilities:
+          drop:
+            - CAP_MKNOD
+            - CAP_NET_RAW
+            - CAP_AUDIT_WRITE
+  restartPolicy: Never
+status: {}
