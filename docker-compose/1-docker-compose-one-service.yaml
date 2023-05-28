@@ -1,0 +1,5 @@
+services:
+  helloservice-1:
+    image: docker.io/mydeveloperplanet/mypodmanplanet:0.0.1-SNAPSHOT
+    ports:
+    - 8080:8080
