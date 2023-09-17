@@ -7,3 +7,5 @@ https://mydeveloperplanet.com/2023/05/24/is-podman-a-drop-in-replacement-for-doc
 https://mydeveloperplanet.com/2023/06/07/podman-equivalent-for-docker-compose/
 
 https://mydeveloperplanet.com/2023/06/21/podman-compose-vs-docker-compose/
+
+https://mydeveloperplanet.com/2023/09/20/podman-desktop-review/
